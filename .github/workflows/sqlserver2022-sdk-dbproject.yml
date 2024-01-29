@@ -12,14 +12,13 @@ jobs:
       - name: Build Database project
         run: |
           dotnet build --configuration Release /p:NetCoreBuild=true
-          ls D:\a\sql-server-cicd-demo\sql-server-cicd-demo\bin\Release\
-          dotnet publish -c Release GitHub-SQLServer2022-SDK-DBProject.sqlproj
+      # dotnet publish -c Release GitHub-SQLServer2022-SDK-DBProject.sqlproj
       # - name: Publish Database deployment
       #   run: |
       #     dotnet publish -c Release -o ./sql-server-db -p:SqlPublishProfilePath='D:\a\sql-server-cicd-demo\sql-server-cicd-demo\obj\Release\Model.xml'
-      # - name: Zip the deployment package
-      #   shell: powershell
-      #   run: Compress-Archive -Path "D:\a\sql-server-cicd-demo\sql-server-cicd-demo\" -DestinationPath "D:\a\sql-server-cicd-demo\sql-server-cicd-demo\sql-server-db.zip"
+      - name: Zip the deployment package
+        shell: powershell
+        run: Compress-Archive -Path "D:\a\sql-server-cicd-demo\sql-server-cicd-demo\" -DestinationPath "D:\a\sql-server-cicd-demo\sql-server-cicd-demo\sql-server-db.zip"
       # Publish artifact
       # - uses: actions/upload-artifact@v3.1.2
       #   with:
