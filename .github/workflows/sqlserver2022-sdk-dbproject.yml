@@ -6,24 +6,32 @@ on:
 jobs:
   BuildDacpac:
     runs-on: windows-latest
+    
+    env:
+      AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+
     steps:
       - uses: actions/checkout@v3.3.0
-      # Build dacpac using dotnet build
+      
       - name: Build Database project
         run: |
           dotnet build --configuration Release /p:NetCoreBuild=true
-      # dotnet publish -c Release GitHub-SQLServer2022-SDK-DBProject.sqlproj
-      # - name: Publish Database deployment
-      #   run: |
-      #     dotnet publish -c Release -o ./sql-server-db -p:SqlPublishProfilePath='D:\a\sql-server-cicd-demo\sql-server-cicd-demo\obj\Release\Model.xml'
+
       - name: Zip the deployment package
         shell: powershell
         run: Compress-Archive -Path "D:\a\sql-server-cicd-demo\sql-server-cicd-demo\" -DestinationPath "D:\a\sql-server-cicd-demo\sql-server-cicd-demo\sql-server-db.zip"
-      # Publish artifact
-      # - uses: actions/upload-artifact@v3.1.2
-      #   with:
-      #     name: SQLDB
-      #     path: ${{ github.workspace }}/bin/Debug/ 
+      
+      - name: Set AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+           
+      - name: Publish the artifacts to S3
+        shell: cmd
+        run: |
+          aws s3 cp D:\a\sql-server-cicd-demo\sql-server-cicd-demo\sql-server-db.zip s3://${{ env.AWS_BUCKET_NAME }}/sql-server-cicd/
 
 # Deploy dacpac job
   # DeploySQL2022Updates:
