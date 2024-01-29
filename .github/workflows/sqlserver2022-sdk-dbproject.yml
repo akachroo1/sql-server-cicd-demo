@@ -41,29 +41,19 @@ jobs:
         run: |
           $privateIp = $null
           $publicIp = $null
-      
           if ($privateIp -eq $null) {
-              try {
-                  $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
-                  echo "The deploy job server IP (private) is $privateIp"
-              } catch {
-                  echo "Unable to retrieve private IP address."
-              }
-          }
-      
-          if ($publicIp -eq $null) {
+            try {
+                $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
+                echo "The deploy job server IP (private) is $privateIp"
+            } 
+          } elseif ($publicIp -eq $null) {
               try {
                   $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
                   echo "The deploy job server IP (public) is $publicIp"
-              } catch {
-                  echo "Unable to retrieve public IP address."
-              }
-          }
-      
-          if ($privateIp -eq $null -and $publicIp -eq $null) {
+              } 
+          } else {
               echo "Unable to retrieve either private or public IP address."
           }
-
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -83,7 +73,7 @@ jobs:
       - name: Deploy DACPAC to AWS RDS
         shell: powershell
         run: |
-          C:\Users\Administrator\.dotnet\tools\sqlpackage.exe /a:Publish /tsn:${{ env.DB_ENDPOINT }} /tdn:${{ env.DB_NAME }} /tu:${{ env.DB_USERNAME }} /tp:${{ env.DB_PASSWORD }}/sf:"C:\sql-server-cicd\sql-server-cicd\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac"
+          C:\Users\Administrator\.dotnet\tools\sqlpackage.exe /a:Publish /tsn:${{ env.DB_ENDPOINT }} /tdn:${{ env.DB_NAME }} /tu:${{ env.DB_USERNAME }} /tp:${{ env.DB_PASSWORD }}/sf:C:\sql-server-cicd\sql-server-cicd\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
