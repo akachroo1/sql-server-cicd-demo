@@ -12,6 +12,7 @@ jobs:
       - name: Build Database project
         run: |
           dotnet build --configuration Release /p:NetCoreBuild=true
+          ls D:\a\sql-server-cicd-demo\sql-server-cicd-demo\bin\Release\
       # - name: Publish Database deployment
       #   run: |
       #     dotnet publish -c Release -o ./sql-server-db -p:SqlPublishProfilePath='D:\a\sql-server-cicd-demo\sql-server-cicd-demo\obj\Release\Model.xml'
