@@ -12,6 +12,12 @@ jobs:
       - name: Build Database project
         run: |
           dotnet build --configuration Release
+      - name: Publish Database deployment
+        run: |
+          dotnet publish -c Release -o ./sql-server-db
+      - name: Zip the deployment package
+        shell: powershell
+        run: Compress-Archive -Path "D:\a\sql-server-cicd-demo\sql-server-cicd-demo\" -DestinationPath "D:\a\sql-server-cicd-demo\sql-server-cicd-demo\sql-server-db.zip"
       # Publish artifact
       # - uses: actions/upload-artifact@v3.1.2
       #   with:
