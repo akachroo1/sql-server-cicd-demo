@@ -41,19 +41,28 @@ jobs:
         run: |
           $privateIp = $null
           $publicIp = $null
-          if ($privateIp -eq $null) {
-            try {
-                $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
-                echo "The deploy job server IP (private) is $privateIp"
-            } 
-          } elseif ($publicIp -eq $null) {
-              try {
-                  $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
-                  echo "The deploy job server IP (public) is $publicIp"
-              } 
-          } else {
-              echo "Unable to retrieve either private or public IP address."
+          
+          # Try to retrieve private IP address
+          try {
+              $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
+              Write-Host "The deploy job server IP (private) is $privateIp"
+          } catch {
+              Write-Host "Unable to retrieve private IP address. Error: $_"
           }
+          
+          # Try to retrieve public IP address
+          try {
+              $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
+              Write-Host "The deploy job server IP (public) is $publicIp"
+          } catch {
+              Write-Host "Unable to retrieve public IP address. Error: $_"
+          }
+          
+          # Check if either private or public IP is retrieved
+          if ($privateIp -eq $null -and $publicIp -eq $null) {
+              Write-Host "Unable to retrieve either private or public IP address."
+          }
+        
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
