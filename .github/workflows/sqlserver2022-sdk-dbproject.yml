@@ -1,20 +1,12 @@
-name: Update SQL Server 2022 database
-
-#Sets the trigger to update when update is pushed to a sql-action-v1-feature branch
+name: CI/CD pipeline for MSSQL Server
 on:
   push:
-    branches: 
-      - main
+    branches: [ main ]
 
 jobs:
-
-  # Job to build and publish the dacpac
   BuildDacpac:
-    runs-on: self-hosted
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    runs-on: windows-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3.3.0
       # Build dacpac using dotnet build
       - name: Build Database project
