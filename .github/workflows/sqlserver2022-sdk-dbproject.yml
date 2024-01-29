@@ -1,4 +1,4 @@
-name: CI/CD pipeline for MSSQL Server
+name: CI/CD pipeline for MSSQL Server using GitHub Actions
 on:
   push:
     branches: [ main ]
