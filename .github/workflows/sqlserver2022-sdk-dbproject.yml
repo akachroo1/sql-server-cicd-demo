@@ -34,7 +34,7 @@ jobs:
 # Deploy dacpac job
   DeploySQL2022Updates:
     needs: BuildDacpac
-    runs-on: [ self-hosted, Windows, X64, sql-server-cicd-demo ]
+    runs-on: [ self-hosted, Windows, X64, db-cicd-demo ]
     steps:
       - name: Print the server IP for deploy job
         shell: powershell
