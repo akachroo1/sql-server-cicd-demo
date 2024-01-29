@@ -2,14 +2,12 @@ name: CI/CD pipeline for MSSQL Server using GitHub Actions
 on:
   push:
     branches: [ main ]
+env:
+  AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
 
 jobs:
   BuildDacpac:
     runs-on: windows-latest
-
-    env:
-      AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-
     steps:
       - uses: actions/checkout@v3.3.0
       
