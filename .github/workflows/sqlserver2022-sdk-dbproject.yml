@@ -77,7 +77,7 @@ jobs:
       - name: Deploy DACPAC to AWS RDS
         shell: powershell
         run: |
-          C:\Users\Administrator\.dotnet\tools\sqlpackage.exe /a:Publish /tsn:${{ env.DB_ENDPOINT }} /tdn:${{ env.DB_NAME }} /tu:${{ env.DB_USERNAME }} /tp:${{ env.DB_PASSWORD }}/sf:C:\sql-server-cicd\sql-server-cicd\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac
+          C:\Users\Administrator\.dotnet\tools\sqlpackage.exe /a:Publish /tsn:${{ env.DB_ENDPOINT }} /tdn:${{ env.DB_NAME }} /tu:${{ env.DB_USERNAME }} /tp:${{ env.DB_PASSWORD }}/sf:"C:\sql-server-cicd\sql-server-cicd\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
