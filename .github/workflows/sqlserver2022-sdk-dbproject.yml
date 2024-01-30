@@ -4,6 +4,7 @@ on:
     branches: [ main ]
 env:
   AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+  DB_ENDPOINT: ${{ secrets.DB_ENDPOINT }}
 
 jobs:
   BuildDacpac:
@@ -55,6 +56,15 @@ jobs:
       - name: get sqlpackage version
         working-directory: C:\Program Files\Microsoft SQL Server\160\DAC\bin\
         run: ./SqlPackage /version
+      
+      - name: MSSQL Deploy
+        uses: Azure/sql-action@v2
+        with:
+          # The connection string, including authentication information, for the Azure SQL Server database.
+          connection-string: ${{ secrets.DB_ENDPOINT }}
+          # Path to DACPAC file to deploy
+          path: .\DatabaseProjectAdventureWorksLT\bin\Release\DatabaseProjectAdventureWorksLT.dacpac
+          action: publish
       
       # - name: Deploy DACPAC to AWS RDS
       #   shell: powershell
