@@ -40,28 +40,22 @@ jobs:
       - name: To print the deploy job server IP
         shell: powershell
         run: |
-          $privateIp = $null
-          $publicIp = $null
+          $publicIP = (Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction SilentlyContinue)
           
-          try {
-              $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
-              echo "The deploy job server IP (private) is $privateIp"
-          } catch {
-              echo "Unable to retrieve private IP address."
+          $privateIP = (Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction SilentlyContinue)
+          
+          if ($publicIP) {
+              Write-Output "Public IP: $publicIP"
+          } else {
+              Write-Output "Unable to retrieve public IP."
           }
           
-          if ($privateIp -eq $null) {
-              try {
-                  $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
-                  echo "The deploy job server IP (public) is $publicIp"
-              } catch {
-                  echo "Unable to retrieve public IP address."
-              }
+          if ($privateIP) {
+              Write-Output "Private IP: $privateIP"
+          } else {
+              Write-Output "Unable to retrieve private IP."
           }
-          
-          if ($privateIp -eq $null -and $publicIp -eq $null) {
-              echo "Unable to retrieve either private or public IP address."
-          }
+        
         
         
       - name: Set AWS credentials
