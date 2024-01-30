@@ -36,12 +36,6 @@ jobs:
     needs: BuildDacpac
     runs-on: [ self-hosted, Windows, X64, db-cicd-demo ]
     steps:
-      - name: Print the server IP for deploy job
-        shell: powershell
-        run: |
-          $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
-          Write-Host "The deploy job server IP (public) is $publicIp"
-        
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
