@@ -57,13 +57,13 @@ jobs:
         working-directory: C:\Program Files\Microsoft SQL Server\160\DAC\bin\
         run: ./SqlPackage /version
       
-      - name: MSSQL Deploy
+      - name: Deploy DACPAC to Target Server
         uses: Azure/sql-action@v2
         with:
           # The connection string, including authentication information, for the Azure SQL Server database.
           connection-string: ${{ secrets.DB_ENDPOINT }}
           # Path to DACPAC file to deploy
-          path: .\DatabaseProjectAdventureWorksLT\bin\Release\DatabaseProjectAdventureWorksLT.dacpac
+          path: "C:\db-cicd-demo\db-cicd-demo\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac"
           action: publish
       
       # - name: Deploy DACPAC to AWS RDS
