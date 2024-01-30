@@ -46,11 +46,11 @@ jobs:
       - name: Download the zip file from S3 to EC2 folder
         shell: powershell
         run: |
-          C:\"Program Files"\Amazon\AWSCLIV2\aws s3 cp s3://${{ env.AWS_BUCKET_NAME }}/sql-server-cicd/sql-server-db.zip "C:\sql-server-cicd\sql-server-cicd\"
+          C:\"Program Files"\Amazon\AWSCLIV2\aws s3 cp s3://${{ env.AWS_BUCKET_NAME }}/sql-server-cicd/sql-server-db.zip "C:\db-cicd-demo\db-cicd-demo\"
       
       - name: Unzipping the Zip file
         shell: powershell
-        run: Expand-Archive -Path "C:\sql-server-cicd\sql-server-cicd\sql-server-db.zip" -DestinationPath "C:\sql-server-cicd\sql-server-cicd\sql-server-cicd-db" -Force
+        run: Expand-Archive -Path "C:\db-cicd-demo\db-cicd-demo\sql-server-db.zip" -DestinationPath "C:\db-cicd-demo\db-cicd-demo\sql-server-cicd-db" -Force
       
       - name: get sqlpackage version
         working-directory: C:\Program Files\Microsoft SQL Server\160\DAC\bin\
