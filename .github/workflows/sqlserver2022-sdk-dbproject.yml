@@ -33,7 +33,7 @@ jobs:
           aws s3 cp D:\a\sql-server-cicd-demo\sql-server-cicd-demo\sql-server-db.zip s3://${{ env.AWS_BUCKET_NAME }}/sql-server-cicd/
 
 # Deploy dacpac job
-  DeploySQL2022Updates:
+  DeployDACPACToTargetServer:
     needs: BuildDacpac
     runs-on: [ self-hosted, Windows, X64, db-cicd-demo ]
     steps:  
@@ -44,31 +44,31 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       
-      # - name: To print the deploy job server IP
-      #   shell: powershell
-      #   run: |
-      #     $privateIp = $null
-      #     $publicIp = $null
-      #     if ($privateIp -eq $null) {
-      #       try {
-      #           $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
-      #           echo "The deploy job server IP (private) is $privateIp"
-      #       } catch {
-      #           $errorMessage = $_.Exception.Message
-      #           echo "Error: $errorMessage"
-      #       }
-      #     } elseif ($publicIp -eq $null) {
-      #         try {
-      #             $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
-      #             echo "The deploy job server IP (public) is $publicIp"
-      #         } catch {
-      #             $errorMessage = $_.Exception.Message
-      #             echo "Error: $errorMessage"
-      #         }
-      #     } else {
-      #         $errorMessage = $_.Exception.Message
-      #         echo "Error: $errorMessage"
-      #     }
+      - name: To print the deploy job server IP
+        shell: powershell
+        run: |
+          $privateIp = $null
+          $publicIp = $null
+          if ($privateIp -eq $null) {
+            try {
+                $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
+                echo "The deploy job server IP (private) is $privateIp"
+            } catch {
+                $errorMessage = $_.Exception.Message
+                echo "Error: $errorMessage"
+            }
+          } elseif ($publicIp -eq $null) {
+              try {
+                  $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
+                  echo "The deploy job server IP (public) is $publicIp"
+              } catch {
+                  $errorMessage = $_.Exception.Message
+                  echo "Error: $errorMessage"
+              }
+          } else {
+              $errorMessage = $_.Exception.Message
+              echo "Error: $errorMessage"
+          }
       
       - name: Download the zip file from S3 to EC2 folder
         shell: powershell
@@ -83,23 +83,14 @@ jobs:
         working-directory: C:\Program Files\Microsoft SQL Server\160\DAC\bin\
         run: ./SqlPackage /version
       
-      # - name: Deploy DACPAC to Target Server
-      #   uses: Azure/sql-action@v2
-      #   with:
-      #     # The connection string, including authentication information, for the Azure SQL Server database.
-      #     connection-string: ${{ secrets.DB_ENDPOINT }}
-      #     # Path to DACPAC file to deploy
-      #     path: C:\db-cicd-demo\db-cicd-demo\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac
-      #     action: publish
-      
-      # - name: Deploy DACPAC to AWS RDS
-      #   shell: powershell
-      #   run: |
-      #     C:\Users\Administrator\.dotnet\tools\sqlpackage.exe /a:Publish /tsn:${{ env.DB_ENDPOINT }} /tdn:${{ env.DB_NAME }} /tu:${{ env.DB_USERNAME }} /tp:${{ env.DB_PASSWORD }}/sf:C:\sql-server-cicd\sql-server-cicd\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     DB_ENDPOINT: ${{ secrets.DB_ENDPOINT }}
-      #     DB_NAME: ${{ secrets.DB_NAME }}
-      #     DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      #     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      - name: Deploy .dacpac to Target Server for creating migrations
+        shell: powershell
+        env:
+          TARGET_SERVER_USERNAME: ${{ secrets.TARGET_SERVER_USERNAME }}
+          TARGET_SERVER_PASSWORD: ${{ secrets.TARGET_SERVER_PASSWORD }}
+          SOURCE_FILE_PATH: ${{ vars.SOURCE_FILE_PATH }}
+          TARGET_SERVER_NAME: ${{ secrets.TARGET_SERVER_NAME }}
+          TARGET_SERVER_PORT: ${{ vars.TARGET_SERVER_PORT }}
+        run: |
+          SqlPackage /a:Publish /tsn:"${{ env.TARGET_SERVER_NAME }},${{ env.TARGET_SERVER_PORT }}" /tdn:"bank" /tu:"${{ env.TARGET_SERVER_USERNAME }}" /tp:"${{ env.TARGET_SERVER_PASSWORD }}" /sf:"${{ env.SOURCE_FILE_PATH }}" /p:VerifyDeployment=False
+        
