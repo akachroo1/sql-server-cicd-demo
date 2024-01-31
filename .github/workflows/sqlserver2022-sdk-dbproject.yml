@@ -36,7 +36,14 @@ jobs:
   DeploySQL2022Updates:
     needs: BuildDacpac
     runs-on: [ self-hosted, Windows, X64, db-cicd-demo ]
-    steps:
+    steps:  
+      - name: Set AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
       - name: To print the deploy job server IP
         shell: powershell
         run: |
@@ -59,13 +66,6 @@ jobs:
           } else {
               echo "Unable to retrieve either private or public IP address."
           }
-        
-      - name: Set AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
       
       - name: Download the zip file from S3 to EC2 folder
         shell: powershell
