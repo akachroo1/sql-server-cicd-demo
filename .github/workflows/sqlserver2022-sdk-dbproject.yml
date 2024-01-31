@@ -92,5 +92,5 @@ jobs:
           TARGET_SERVER_NAME: ${{ secrets.TARGET_SERVER_NAME }}
           TARGET_SERVER_PORT: ${{ vars.TARGET_SERVER_PORT }}
         run: |
-          SqlPackage /a:Publish /tsn:"${{ env.TARGET_SERVER_NAME }},${{ env.TARGET_SERVER_PORT }}" /tdn:"bank" /tu:"${{ env.TARGET_SERVER_USERNAME }}" /tp:"${{ env.TARGET_SERVER_PASSWORD }}" /sf:"${{ env.SOURCE_FILE_PATH }}" /p:VerifyDeployment=False
+          "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /a:Publish /tsn:"${{ env.TARGET_SERVER_NAME }},${{ env.TARGET_SERVER_PORT }}" /tdn:"bank" /tu:"${{ env.TARGET_SERVER_USERNAME }}" /tp:"${{ env.TARGET_SERVER_PASSWORD }}" /sf:"${{ env.SOURCE_FILE_PATH }}" /p:VerifyDeployment=False
         
