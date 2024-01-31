@@ -44,31 +44,31 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       
-      - name: To print the deploy job server IP
-        shell: powershell
-        run: |
-          $privateIp = $null
-          $publicIp = $null
-          if ($privateIp -eq $null) {
-            try {
-                $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
-                echo "The deploy job server IP (private) is $privateIp"
-            } catch {
-                $errorMessage = $_.Exception.Message
-                echo "Error: $errorMessage"
-            }
-          } elseif ($publicIp -eq $null) {
-              try {
-                  $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
-                  echo "The deploy job server IP (public) is $publicIp"
-              } catch {
-                  $errorMessage = $_.Exception.Message
-                  echo "Error: $errorMessage"
-              }
-          } else {
-              $errorMessage = $_.Exception.Message
-              echo "Error: $errorMessage"
-          }
+      # - name: To print the deploy job server IP
+      #   shell: powershell
+      #   run: |
+      #     $privateIp = $null
+      #     $publicIp = $null
+      #     if ($privateIp -eq $null) {
+      #       try {
+      #           $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
+      #           echo "The deploy job server IP (private) is $privateIp"
+      #       } catch {
+      #           $errorMessage = $_.Exception.Message
+      #           echo "Error: $errorMessage"
+      #       }
+      #     } elseif ($publicIp -eq $null) {
+      #         try {
+      #             $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
+      #             echo "The deploy job server IP (public) is $publicIp"
+      #         } catch {
+      #             $errorMessage = $_.Exception.Message
+      #             echo "Error: $errorMessage"
+      #         }
+      #     } else {
+      #         $errorMessage = $_.Exception.Message
+      #         echo "Error: $errorMessage"
+      #     }
       
       - name: Download the zip file from S3 to EC2 folder
         shell: powershell
@@ -83,14 +83,14 @@ jobs:
         working-directory: C:\Program Files\Microsoft SQL Server\160\DAC\bin\
         run: ./SqlPackage /version
       
-      - name: Deploy DACPAC to Target Server
-        uses: Azure/sql-action@v2
-        with:
-          # The connection string, including authentication information, for the Azure SQL Server database.
-          connection-string: ${{ secrets.DB_ENDPOINT }}
-          # Path to DACPAC file to deploy
-          path: C:\db-cicd-demo\db-cicd-demo\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac
-          action: publish
+      # - name: Deploy DACPAC to Target Server
+      #   uses: Azure/sql-action@v2
+      #   with:
+      #     # The connection string, including authentication information, for the Azure SQL Server database.
+      #     connection-string: ${{ secrets.DB_ENDPOINT }}
+      #     # Path to DACPAC file to deploy
+      #     path: C:\db-cicd-demo\db-cicd-demo\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac
+      #     action: publish
       
       # - name: Deploy DACPAC to AWS RDS
       #   shell: powershell
