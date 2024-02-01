@@ -104,4 +104,4 @@ jobs:
       - name: Measuring Drifts to a deployed database
         shell: powershell
         run: |
-          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:DriftReport /TargetConnectionString:"Server=EC2AMAZ-DC3KDV1,1433;Database=bank;Integrated Security=SSPI;" /OutputPath:"C:\Drift_Report.xml" Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
+          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:DriftReport /TargetConnectionString:"Server=EC2AMAZ-DC3KDV1,1433;Database=bank;Integrated Security=SSPI;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;" /OutputPath:"C:\Drift_Report.xml"
