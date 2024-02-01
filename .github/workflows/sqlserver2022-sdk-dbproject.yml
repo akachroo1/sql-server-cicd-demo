@@ -92,5 +92,4 @@ jobs:
           TARGET_SERVER_NAME: ${{ secrets.TARGET_SERVER_NAME }}
           TARGET_SERVER_PORT: ${{ vars.TARGET_SERVER_PORT }}
         run: |
-          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /a:Publish /tsn:"${{ env.TARGET_SERVER_NAME }},${{ env.TARGET_SERVER_PORT }}" /tdn:"bank" /tu:"${{ env.TARGET_SERVER_USERNAME }}" /tp:"${{ env.TARGET_SERVER_PASSWORD }}" /sf:"${{ env.SOURCE_FILE_PATH }}" /p:VerifyDeployment=False
-        
+          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /a:Publish /tsn:"13.201.35.56,1434" /tdn:"bank" /tu:"sqldemopoc" /tp:"sqldemo1234@#" /sf:"C:\db-cicd-demo\db-cicd-demo\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac" /p:VerifyDeployment=False
