@@ -4,9 +4,9 @@ on:
     branches: [ main ]
 env:
   AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-  TARGET_SERVER_NAME: ${{ secrets.TARGET_SERVER_NAME }}
-  TARGET_SERVER_PASSWORD: ${{ secrets.TARGET_SERVER_PASSWORD }}
-  TARGET_SERVER_USERNAME: ${{ secrets.TARGET_SERVER_USERNAME }}
+  TARGET_SERVER_NAME: ${{ vars.TARGET_SERVER_NAME }}
+  TARGET_SERVER_PASSWORD: ${{ vars.TARGET_SERVER_PASSWORD }}
+  TARGET_SERVER_USERNAME: ${{ vars.TARGET_SERVER_USERNAME }}
   SOURCE_FILE_PATH: ${{ vars.SOURCE_FILE_PATH }}
   TARGET_SERVER_PORT: ${{ vars.TARGET_SERVER_PORT }}
 
@@ -108,7 +108,7 @@ jobs:
           echo ${{ env.TARGET_SERVER_PASSWORD }}
           echo ${{ env.TARGET_SERVER_PORT }}
           echo ${{ env.SOURCE_FILE_PATH }}
-          
+
       - name: Deploy .dacpac to Target Server for creating migrations
         shell: powershell
         run: |
