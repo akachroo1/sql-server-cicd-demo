@@ -5,7 +5,7 @@ on:
 env:
   AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
   TARGET_SERVER_NAME: ${{ vars.TARGET_SERVER_NAME }}
-  TARGET_SERVER_PASSWORD: ${{ secrets.TARGET_SERVER_PASSWORD }}
+  TARGET_SERVER_PASSWORD: ${{ vars.TARGET_SERVER_PASSWORD }}
   TARGET_SERVER_USERNAME: ${{ vars.TARGET_SERVER_USERNAME }}
   SOURCE_FILE_PATH: ${{ vars.SOURCE_FILE_PATH }}
   TARGET_SERVER_PORT: ${{ vars.TARGET_SERVER_PORT }}
@@ -103,8 +103,7 @@ jobs:
       - name: Deploy .dacpac to Target Server for creating migrations
         shell: powershell
         run: |
-          & "${{ env.SOURCE_FILE_PATH }}" /Action:Publish /SourceFile:"C:\db-cicd-demo\db-cicd-demo\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac" /TargetConnectionString:"Server=tcp:${{ env.TARGET_SERVER_NAME }},${{ env.TARGET_SERVER_PORT }};Initial Catalog=bank;Persist Security Info=False;User ID=${{ env.TARGET_SERVER_USERNAME }};Password=${{ env.TARGET_SERVER_PASSWORD }};MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;"
-      
+          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:Publish /SourceFile:"C:\db-cicd-demo\db-cicd-demo\sql-server-cicd-db\sql-server-cicd-demo\bin\Release\GitHub-SQLServer2022-SDK-DBProject.dacpac" /TargetConnectionString:"Server=tcp:EC2AMAZ-DC3KDV1,1433;Initial Catalog=bank;Persist Security Info=False;User ID=sqldemopoc;Password=sqldemo1234@#;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;"      
       # - name: Measuring Deployed & Drift report of a deployed database
       #   shell: powershell
       #   run: |

@@ -1,7 +1,7 @@
 Create table bank_details (
 bank_name VARCHAR,
 branch_name VARCHAR,
-branch_pin_code INT
+bank_ifsc_code INT
 );
 
 GO
