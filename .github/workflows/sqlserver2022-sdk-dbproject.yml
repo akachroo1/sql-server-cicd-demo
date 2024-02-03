@@ -100,15 +100,6 @@ jobs:
         working-directory: C:\Program Files\Microsoft SQL Server\160\DAC\bin\
         run: ./SqlPackage /version
       
-      - name: Print values of Environment variables/secrets
-        shell: powershell
-        run: |
-          echo 
-          echo 
-          echo 
-          
-          echo 
-
       - name: Deploy .dacpac to Target Server for creating migrations
         shell: powershell
         run: |
