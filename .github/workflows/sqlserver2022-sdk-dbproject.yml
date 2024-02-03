@@ -103,7 +103,7 @@ jobs:
       - name: Deploy .dacpac to Target Server for creating migrations
         shell: powershell
         run: |
-          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:Publish /SourceFile:"${{ env.SOURCE_FILE_PATH }}" /TargetConnectionString:"Server=tcp:${{ env.TARGET_SERVER_NAME }},${{ env.TARGET_SERVER_PORT }};Initial Catalog=bank;Persist Security Info=False;User ID=${{ env.TARGET_SERVER_USERNAME }};Password=${{ env.TARGET_SERVER_PASSWORD }};MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;"
+          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:Publish /SourceFile:"${{ env.SOURCE_FILE_PATH }}" /TargetConnectionString:"Server=tcp:'${{ env.TARGET_SERVER_NAME }}',${{ env.TARGET_SERVER_PORT }};Initial Catalog=bank;Persist Security Info=False;User ID=${{ env.TARGET_SERVER_USERNAME }};Password=${{ env.TARGET_SERVER_PASSWORD }};MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;"
       
       # - name: Measuring Deployed & Drift report of a deployed database
       #   shell: powershell
