@@ -1,0 +1,10 @@
+C:\database-projects\sql-server-cicd-demo\bin\Debug\GitHub-SQLServer2022-SDK-DBProject.dacpac
+C:\database-projects\sql-server-cicd-demo\bin\Debug\GitHub-SQLServer2022-SDK-DBProject.dll
+C:\database-projects\sql-server-cicd-demo\bin\Debug\GitHub-SQLServer2022-SDK-DBProject.pdb
+C:\database-projects\sql-server-cicd-demo\obj\Debug\GitHub-SQLServer2022-SDK-DBProject.sqlproj.AssemblyReference.cache
+C:\database-projects\sql-server-cicd-demo\obj\Debug\Model.xml
+C:\database-projects\sql-server-cicd-demo\obj\Debug\refactor.xml
+C:\database-projects\sql-server-cicd-demo\obj\Debug\postdeploy.sql
+C:\database-projects\sql-server-cicd-demo\obj\Debug\predeploy.sql
+C:\database-projects\sql-server-cicd-demo\obj\Debug\GitHub-SQLServer2022-SDK-DBProject.dll
+C:\database-projects\sql-server-cicd-demo\obj\Debug\GitHub-SQLServer2022-SDK-DBProject.pdb
