@@ -8,4 +8,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <ProjectGuid>{b4630d7f-cddf-4cff-bde3-67cb3c1275dc}</ProjectGuid>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="sql-server-cicd.publish.xml" />
+  </ItemGroup>
 </Project>
