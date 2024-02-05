@@ -2,7 +2,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TargetDatabaseName>GitHub-SQLServer2022-SDK-DBProject</TargetDatabaseName>
-    <TargetConnectionString>Data Source=EC2AMAZ-DC3KDV1;Initial Catalog=bank;User ID=sqldemopoc;Password=sqldemo1234@#;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Authentication=SqlPassword;Command Timeout=30</TargetConnectionString>
+    <TargetConnectionString>Data Source=EC2AMAZ-DC3KDV1;Initial Catalog=bank;User ID=sqldemopoc;Password=sqldemo1234@#;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Command Timeout=30</TargetConnectionString>
     <AllowIncompatiblePlatform>True</AllowIncompatiblePlatform>
     <DropPermissionsNotInSource>True</DropPermissionsNotInSource>
     <DropObjectsNotInSource>True</DropObjectsNotInSource>
