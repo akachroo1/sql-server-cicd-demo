@@ -18,22 +18,23 @@ jobs:
       - name: Checkout code repository
         uses: actions/checkout@v3.3.0
       
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
+      - name: Set up .NET core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: True
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1.0.5
+      - name: Print dotnet core version
+        run: dotnet --version
 
       - name: Restore dependencies
-        run: nuget restore
+        run: dotnet restore
 
       - name: Build Database project
-        run: |
-          MSBuild build --configuration Release /p:NetCoreBuild=true
+        run: dotnet build --configuration Release /p:NetCoreBuild=true
       
       - name: Publish Database project for development purposes
-        run: |
-          MSBuild /t:Publish /p:TargetDatabaseName="bank";TargetConnectionString="Data Source=EC2AMAZ-DC3KDV1;Integrated Security=False;Pooling=False" /p:SqlPublishProfilePath="sql-server-cicd.publish.xml" "GitHub-SQLServer2022-SDK-DBProject.sqlproj"
+        run: dotnet publish /t:publish /p:SqlPublishProfilePath="sql-server-cicd.publish.xml" "GitHub-SQLServer2022-SDK-DBProject.sqlproj"
 
       - name: Zip the deployment package
         shell: powershell
@@ -73,19 +74,22 @@ jobs:
                 $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
                 echo "The deploy job server IP (private) is $privateIp"
             } catch {
-                echo "Unable to retrieve private IP address."
+                $errorMessage = $_.Exception.Message
+                echo "Error: $errorMessage"
             }
           } elseif ($publicIp -eq $null) {
               try {
                   $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
                   echo "The deploy job server IP (public) is $publicIp"
               } catch {
-                  echo "Unable to retrieve public IP address."
+                  $errorMessage = $_.Exception.Message
+                  echo "Error: $errorMessage"
               }
           } else {
-              echo "Unable to retrieve either private or public IP address."
+              $errorMessage = $_.Exception.Message
+              echo "Error: $errorMessage"
           }
-        
+      
       - name: Download the zip file from S3 to EC2 folder
         shell: powershell
         run: |
