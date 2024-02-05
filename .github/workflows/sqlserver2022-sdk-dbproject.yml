@@ -34,7 +34,7 @@ jobs:
         run: dotnet build --configuration Release /p:NetCoreBuild=true
       
       - name: Publish Database project for development purposes
-        run: dotnet publish /t:publish /p:SqlPublishProfilePath="sql-server-cicd.publish.xml" "GitHub-SQLServer2022-SDK-DBProject.sqlproj"
+        run: dotnet publish /t:publish /p:SqlPublishProfilePath="sql-server-cicd.publish.xml" "GitHub-SQLServer2022-SDK-DBProject.sqlproj" --configuration Release
 
       - name: Zip the deployment package
         shell: powershell
