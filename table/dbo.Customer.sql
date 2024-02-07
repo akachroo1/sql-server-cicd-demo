@@ -1,4 +1,4 @@
-CREATE TABLE [Customer]
+CREATE TABLE [dbo].[Customer]
 (
     [Name] [nvarchar](50) NOT NULL,
     [Address] [nvarchar](200) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE [Customer]
 
 GO
 
-INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Arjun', 'Sonipat', '2024-02-07 00:00:00')
+INSERT INTO [dbo].[Customer] ([Name], [Address], [CreateDate]) VALUES ('Arjun', 'Sonipat', '2024-02-07 00:00:00')
 
 
 GO
